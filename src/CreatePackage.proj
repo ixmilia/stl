@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) IxMilia.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
+<Project
+  xmlns="http://schemas.microsoft.com/developer/msbuild/2003"
+  DefaultTargets="Build"
+  ToolsVersion="12.0">
+
+  <PropertyGroup>
+    <Configuration Condition="'$(Configuration)' == ''">Release</Configuration>
+    <ProjectFile>$(MSBuildThisFileDirectory)\IxMilia.Stl\IxMilia.Stl.csproj</ProjectFile>
+  </PropertyGroup>
+
+  <Target Name="Build">
+    <MSBuild BuildInParallel="true"
+             Projects="$(MSBuildThisFileDirectory)\..\BuildAndTest.proj"
+             Properties="TreatWarningsAsErrors=true;Configuration=$(Configuration)"
+             Targets="BuildAndTest" />
+    <Exec Command="$(MSBuildThisFileDirectory)\.nuget\NuGet.exe pack $(ProjectFile) -Prop Configuration=$(Configuration) -OutputDirectory $(MSBuildThisFileDirectory)\Binaries\$(Configuration) -Symbols" />
+  </Target>
+
+</Project>
