@@ -1,7 +1,9 @@
 ﻿IxMilia.Stl
 ===========
 
-A portable .NET library for reading and writing STL files.
+A portable .NET library for reading and writing STL files.  Clone and build
+locally or directly consume the
+[NuGet package](http://www.nuget.org/packages/IxMilia.Stl/).
 
 ### Usage
 
