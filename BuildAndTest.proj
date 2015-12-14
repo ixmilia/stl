@@ -7,9 +7,9 @@
 
   <PropertyGroup>
     <Configuration Condition="'$(Configuration)' == ''">Debug</Configuration>
-    <StlSolution>$(MSBuildThisFileDirectory)\src\IxMilia.Stl.sln</StlSolution>
-    <TestAssembly>$(MSBuildThisFileDirectory)\src\Binaries\$(Configuration)\IxMilia.Stl.Test.dll</TestAssembly>
-    <NuGetExe>$(MSBuildThisFileDirectory)\src\.nuget\NuGet.exe</NuGetExe>
+    <StlSolution>$(MSBuildThisFileDirectory)src\IxMilia.Stl.sln</StlSolution>
+    <TestAssembly>$(MSBuildThisFileDirectory)src\Binaries\$(Configuration)\IxMilia.Stl.Test.dll</TestAssembly>
+    <NuGetExe>$(MSBuildThisFileDirectory)src\.nuget\NuGet.exe</NuGetExe>
   </PropertyGroup>
 
   <UsingTask TaskName="DownloadFile" TaskFactory="CodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.v4.0.dll">
@@ -53,7 +53,7 @@
   </Target>
 
   <Target Name="Test">
-    <Exec Command="$(MSBuildThisFileDirectory)\src\packages\xunit.runners.1.9.2\tools\xunit.console.clr4.exe $(TestAssembly)" />
+    <Exec Command="$(MSBuildThisFileDirectory)src\packages\xunit.runners.1.9.2\tools\xunit.console.clr4.exe $(TestAssembly)" />
   </Target>
 
   <Target Name="BuildAndTest"
