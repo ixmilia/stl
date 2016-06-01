@@ -33,6 +33,7 @@
   <ItemGroup>
     <Compile Include="StlReaderTests.cs" />
     <Compile Include="StlWriterTests.cs" />
+    <Compile Include="StreamWithNoLengthOrPosition.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -2,7 +2,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -76,7 +75,6 @@ namespace IxMilia.Stl
                 // swallow the remainder of the header
                 for (; i < 80; i++)
                     binReader.ReadByte();
-                Debug.Assert(binReader.BaseStream.Position == 80);
 
                 // get count
                 triangleCount = binReader.ReadUInt32();
