@@ -1,9 +1,7 @@
 ﻿// Copyright (c) IxMilia.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -13,8 +11,7 @@ namespace IxMilia.Stl
     {
         private Stream baseStream;
         private BinaryReader binReader;
-        private string[] tokens;
-        private int tokenPos;
+        private IEnumerator<string> tokenEnumerator;
         private bool isAscii;
         private uint triangleCount;
         private Regex headerReg = new Regex("^solid (.*)$");
@@ -62,13 +59,8 @@ namespace IxMilia.Stl
 
             if (isAscii)
             {
-                // pre-parse all string tokens
-                var textReader = new StreamReader(baseStream);
-                tokens = textReader.ReadToEnd()
-                    .Split(" \t\n\r\f\v".ToCharArray(), StringSplitOptions.RemoveEmptyEntries)
-                    .Select(s => s.Trim())
-                    .ToArray();
-                tokenPos = 0;
+                tokenEnumerator = new StlTokenStream(baseStream);
+                tokenEnumerator.MoveNext();
             }
             else
             {
@@ -185,14 +177,12 @@ namespace IxMilia.Stl
 
         private string PeekToken()
         {
-            if (tokenPos >= tokens.Length)
-                return null;
-            return tokens[tokenPos];
+            return tokenEnumerator.Current;
         }
 
         private void AdvanceToken()
         {
-            tokenPos++;
+            tokenEnumerator.MoveNext();
         }
     }
 }

@@ -1,0 +1,85 @@
+﻿// Copyright (c) IxMilia.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.IO;
+using System.Text;
+
+namespace IxMilia.Stl
+{
+    internal class StlTokenStream : IEnumerator<string>
+    {
+        private StreamReader _textReader;
+
+        public StlTokenStream(Stream baseStream)
+        {
+            _textReader = new StreamReader(baseStream);
+        }
+
+        public string Current { get; private set; }
+
+        object IEnumerator.Current => Current;
+
+        public void Dispose()
+        {
+            _textReader.Dispose();
+        }
+
+        public bool MoveNext()
+        {
+            SwallowWhitespace();
+            if (_textReader.EndOfStream)
+            {
+                Current = null;
+                return false;
+            }
+
+            var sb = new StringBuilder();
+            while (!_textReader.EndOfStream && !IsWhitespace((char)_textReader.Peek()))
+            {
+                sb.Append((char)_textReader.Read());
+            }
+
+            Current = sb.ToString();
+            return true;
+        }
+
+        private void SwallowWhitespace()
+        {
+            bool keepSwallowing = true;
+            while (keepSwallowing && !_textReader.EndOfStream)
+            {
+                if (IsWhitespace((char)_textReader.Peek()))
+                {
+                    _textReader.Read();
+                }
+                else
+                {
+                    break;
+                }
+            }
+        }
+
+        private static bool IsWhitespace(char c)
+        {
+            switch (c)
+            {
+                case ' ':
+                case '\t':
+                case '\r':
+                case '\n':
+                case '\f':
+                case '\v':
+                    return true;
+                default:
+                    return false;
+            }
+        }
+
+        public void Reset()
+        {
+            throw new NotSupportedException();
+        }
+    }
+}

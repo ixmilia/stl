@@ -26,6 +26,7 @@
     <Compile Include="StlNormal.cs" />
     <Compile Include="StlReader.cs" />
     <Compile Include="StlReadException.cs" />
+    <Compile Include="StlTokenStream.cs" />
     <Compile Include="StlTriangle.cs" />
     <Compile Include="StlVertex.cs" />
     <Compile Include="StlWriter.cs" />
