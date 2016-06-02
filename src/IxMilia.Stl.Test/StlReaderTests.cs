@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Xunit;
 
 namespace IxMilia.Stl.Test
@@ -178,6 +179,56 @@ endsolid foo
                     Assert.Equal(new StlVertex(19.0f, 20.0f, 21.0f), file.Triangles[1].Vertex2);
                     Assert.Equal(new StlVertex(22.0f, 23.0f, 24.0f), file.Triangles[1].Vertex3);
                 }
+            }
+        }
+
+        [Fact]
+        public void ReadAsciiTriangleWithNoNormalTest()
+        {
+            var file = FromString(@"
+solid foo
+  facet normal 0 0 0
+    outer loop
+      vertex 0 0 0
+      vertex 1 0 0
+      vertex 0 1 0
+    endloop
+  endfacet
+endsolid foo
+");
+
+            // should be auto-corrected to the positive z axis
+            Assert.Equal(new StlNormal(0, 0, 1), file.Triangles.Single().Normal);
+        }
+
+        [Fact]
+        public void ReadBinaryTriangleWithNoNormalTest()
+        {
+            var binaryList = new List<byte>();
+            binaryList.AddRange(new byte[80]); // header
+            binaryList.AddRange(BitConverter.GetBytes(1)); // 1 triangle
+            binaryList.AddRange(BitConverter.GetBytes(0.0f)); // normal.X
+            binaryList.AddRange(BitConverter.GetBytes(0.0f)); // normal.Y
+            binaryList.AddRange(BitConverter.GetBytes(0.0f)); // normal.Z
+            binaryList.AddRange(BitConverter.GetBytes(0.0f)); // vertex1.X
+            binaryList.AddRange(BitConverter.GetBytes(0.0f)); // vertex1.Y
+            binaryList.AddRange(BitConverter.GetBytes(0.0f)); // vertex1.Z
+            binaryList.AddRange(BitConverter.GetBytes(1.0f)); // vertex2.X
+            binaryList.AddRange(BitConverter.GetBytes(0.0f)); // vertex2.Y
+            binaryList.AddRange(BitConverter.GetBytes(0.0f)); // vertex2.Z
+            binaryList.AddRange(BitConverter.GetBytes(0.0f)); // vertex3.X
+            binaryList.AddRange(BitConverter.GetBytes(1.0f)); // vertex3.Y
+            binaryList.AddRange(BitConverter.GetBytes(0.0f)); // vertex3.Z
+            binaryList.AddRange(BitConverter.GetBytes((short)0)); // attribute byte count
+            using (var ms = new MemoryStream())
+            {
+                ms.Write(binaryList.ToArray(), 0, binaryList.Count);
+                ms.Flush();
+                ms.Seek(0, SeekOrigin.Begin);
+                var file = StlFile.Load(ms);
+
+                // should be auto-corrected to the positive z axis
+                Assert.Equal(new StlNormal(0, 0, 1), file.Triangles.Single().Normal);
             }
         }
 

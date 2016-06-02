@@ -83,6 +83,7 @@ namespace IxMilia.Stl
                 var t = ReadTriangle();
                 while (t != null)
                 {
+                    EnsureCorrectNormal(t);
                     triangles.Add(t);
                     t = ReadTriangle();
                 }
@@ -98,11 +99,17 @@ namespace IxMilia.Stl
                     var v3 = ReadVertexBinary();
                     binReader.ReadUInt16(); // attribute byte count; garbage value
                     var t = new StlTriangle(normal, v1, v2, v3);
+                    EnsureCorrectNormal(t);
                     triangles.Add(t);
                 }
             }
 
             return triangles;
+        }
+
+        private static void EnsureCorrectNormal(StlTriangle triangle)
+        {
+            triangle.Normal = triangle.GetValidNormal();
         }
 
         private float ReadFloatBinary()

@@ -22,7 +22,7 @@ namespace IxMilia.Stl
             writer.WriteLine(string.Format("solid {0}", file.SolidName));
             foreach (var triangle in file.Triangles)
             {
-                writer.WriteLine(string.Format("  facet normal {0}", NormalToString(triangle.Normal)));
+                writer.WriteLine(string.Format("  facet normal {0}", NormalToString(triangle.GetValidNormal())));
                 writer.WriteLine("    outer loop");
                 writer.WriteLine(string.Format("      vertex {0}", VertexToString(triangle.Vertex1)));
                 writer.WriteLine(string.Format("      vertex {0}", VertexToString(triangle.Vertex2)));
@@ -49,9 +49,10 @@ namespace IxMilia.Stl
             // write triangles
             foreach (var triangle in file.Triangles)
             {
-                writer.Write(triangle.Normal.X);
-                writer.Write(triangle.Normal.Y);
-                writer.Write(triangle.Normal.Z);
+                var normal = triangle.GetValidNormal();
+                writer.Write(normal.X);
+                writer.Write(normal.Y);
+                writer.Write(normal.Z);
 
                 writer.Write(triangle.Vertex1.X);
                 writer.Write(triangle.Vertex1.Y);

@@ -10,6 +10,8 @@ namespace IxMilia.Stl
         public float Y;
         public float Z;
 
+        public bool IsZero => X == 0.0f && Y == 0.0f && Z == 0.0f;
+
         public StlNormal(float x, float y, float z)
             : this()
         {
