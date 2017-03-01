@@ -45,5 +45,6 @@ using (FileStream fs = new FileStream(@"C:\Path\To\File.stl", FileMode.Open))
 
 Requirements to build locally are:
 
-- [Visual Studio 2015](https://www.visualstudio.com)
-- [.NET Core SDK](https://www.microsoft.com/net/download#core)
+- [Latest .NET Core SDK](https://github.com/dotnet/cli/releases)  As of this writing the following was also required on Ubuntu 14.04:
+
+`sudo apt-get install dotnet-sharedframework-microsoft.netcore.app-1.0.3` 

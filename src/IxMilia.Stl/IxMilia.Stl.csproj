@@ -1,38 +1,17 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<!-- Copyright (c) IxMilia.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information. -->
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <ImportGroup>
-    <Import Project="..\Targets\IxMilia.targets" />
-  </ImportGroup>
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{782E0C0A-10D3-444D-9640-263D03D2B20C}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>IxMilia.Stl</RootNamespace>
+    <Description>A portable .NET library for reading and writing STL files.</Description>
+    <Copyright>Copyright 2017</Copyright>
+    <AssemblyTitle>IxMilia.Stl</AssemblyTitle>
+    <VersionPrefix>0.1.1</VersionPrefix>
+    <Authors>IxMilia</Authors>
+    <TargetFramework>netstandard1.0</TargetFramework>
     <AssemblyName>IxMilia.Stl</AssemblyName>
-    <TargetFrameworkProfile>
-    </TargetFrameworkProfile>
-    <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <MinimumVisualStudioVersion>14.0</MinimumVisualStudioVersion>
-    <TargetFrameworkVersion>v5.0</TargetFrameworkVersion>
+    <PackageId>IxMilia.Stl</PackageId>
+    <PackageTags>CAD;STL</PackageTags>
+    <PackageProjectUrl>https://github.com/IxMilia/Stl</PackageProjectUrl>
+    <PackageLicenseUrl>http://www.apache.org/licenses/LICENSE-2.0</PackageLicenseUrl>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' " />
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' " />
-  <ItemGroup>
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="StlFile.cs" />
-    <Compile Include="StlNormal.cs" />
-    <Compile Include="StlReader.cs" />
-    <Compile Include="StlReadException.cs" />
-    <Compile Include="StlTokenStream.cs" />
-    <Compile Include="StlTriangle.cs" />
-    <Compile Include="StlVertex.cs" />
-    <Compile Include="StlWriter.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="project.json" />
-  </ItemGroup>
-  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
+
 </Project>
