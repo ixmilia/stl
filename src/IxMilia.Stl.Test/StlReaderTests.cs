@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using Xunit;
@@ -229,6 +230,32 @@ endsolid foo
 
                 // should be auto-corrected to the positive z axis
                 Assert.Equal(new StlNormal(0, 0, 1), file.Triangles.Single().Normal);
+            }
+        }
+
+        [Fact]
+        public void ReadDecimalSeparatorCultureTest()
+        {
+            var existingCulture = CultureInfo.CurrentCulture;
+            try
+            {
+                CultureInfo.CurrentCulture = new CultureInfo("fr-FR");
+                var stl = FromString(@"
+solid foo
+  facet normal 0 0 1.0
+    outer loop
+      vertex 0 0 0
+      vertex 1 0 0
+      vertex 0 1 0
+    endloop
+  endfacet
+endsolid foo
+");
+                Assert.Equal(new StlNormal(0.0f, 0.0f, 1.0f), stl.Triangles.Single().Normal);
+            }
+            finally
+            {
+                CultureInfo.CurrentCulture = existingCulture;
             }
         }
 

@@ -1,6 +1,7 @@
 ﻿// Copyright (c) IxMilia.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -172,8 +173,11 @@ namespace IxMilia.Stl
             var text = PeekToken();
             AdvanceToken();
             float value;
-            if (!float.TryParse(text, out value))
+            if (!float.TryParse(text, NumberStyles.Float, CultureInfo.InvariantCulture, out value))
+            {
                 throw new StlReadException("Expected number");
+            }
+
             return value;
         }
 
