@@ -1,5 +1,6 @@
 ﻿// Copyright (c) IxMilia.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+using System.Globalization;
 using System.IO;
 
 namespace IxMilia.Stl
@@ -73,12 +74,18 @@ namespace IxMilia.Stl
 
         private static string NormalToString(StlNormal normal)
         {
-            return string.Format("{0} {1} {2}", normal.X.ToString(FloatFormat), normal.Y.ToString(FloatFormat), normal.Z.ToString(FloatFormat));
+            return string.Format("{0} {1} {2}",
+                normal.X.ToString(FloatFormat, CultureInfo.InvariantCulture),
+                normal.Y.ToString(FloatFormat, CultureInfo.InvariantCulture),
+                normal.Z.ToString(FloatFormat, CultureInfo.InvariantCulture));
         }
 
         private static string VertexToString(StlVertex vertex)
         {
-            return string.Format("{0} {1} {2}", vertex.X.ToString(FloatFormat), vertex.Y.ToString(FloatFormat), vertex.Z.ToString(FloatFormat));
+            return string.Format("{0} {1} {2}",
+                vertex.X.ToString(FloatFormat, CultureInfo.InvariantCulture),
+                vertex.Y.ToString(FloatFormat, CultureInfo.InvariantCulture),
+                vertex.Z.ToString(FloatFormat, CultureInfo.InvariantCulture));
         }
     }
 }

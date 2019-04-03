@@ -1,5 +1,6 @@
 ﻿// Copyright (c) IxMilia.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+using System.Globalization;
 using System.IO;
 using Xunit;
 
@@ -69,6 +70,28 @@ endsolid foo
             for (int i = 0; i < read; i++)
             {
                 Assert.Equal(expected[i], buffer[i]);
+            }
+        }
+
+        [Fact]
+        public void WriteDecimalSeparatorCultureTest()
+        {
+            var existingCulture = CultureInfo.CurrentCulture;
+            try
+            {
+                CultureInfo.CurrentCulture = new CultureInfo("fr-FR");
+                var stl = new StlFile();
+                stl.Triangles.Add(new StlTriangle(new StlNormal(1, 2, 3), new StlVertex(4, 5, 6), new StlVertex(7, 8, 9), new StlVertex(10, 11, 12)));
+                var stream = new MemoryStream();
+                stl.Save(stream);
+                stream.Seek(0, SeekOrigin.Begin);
+                var content = new StreamReader(stream).ReadToEnd();
+                Assert.Contains("facet normal 1.000000e+000 2.000000e+000 3.000000e+000", content);
+                Assert.Contains("vertex 4.000000e+000 5.000000e+000 6.000000e+000", content);
+            }
+            finally
+            {
+                CultureInfo.CurrentCulture = existingCulture;
             }
         }
     }
