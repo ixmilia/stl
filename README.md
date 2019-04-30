@@ -22,6 +22,9 @@ using (FileStream fs = new FileStream(@"C:\Path\To\File.stl", FileMode.Open))
     stlFile = StlFile.Load(fs);
 }
 
+// if on >= NETStandard1.3 you can use:
+// StlFile stlFile = StlFile.Load(@"C:\Path\To\File.stl");
+
 // Now check the `stlFile.SolidName` and `stlFile.Triangles` properties.
 ```
 
@@ -41,6 +44,9 @@ using (FileStream fs = new FileStream(@"C:\Path\To\File.stl", FileMode.Open))
 {
     stlFile.Save(fs);
 }
+
+// if on >= NETStandard1.3 you can use:
+// stlFile.Save(@"C:\Path\To\File.stl");
 ```
 
 ## Building locally

@@ -94,5 +94,23 @@ endsolid foo
                 CultureInfo.CurrentCulture = existingCulture;
             }
         }
+
+        [Fact]
+        public void FileSystemAPITest()
+        {
+            var filePath = Path.GetTempFileName();
+            var stl = new StlFile();
+            stl.Save(filePath);
+            var stlText = File.ReadAllText(filePath);
+            Assert.Contains("solid", stlText);
+
+            try
+            {
+                File.Delete(filePath);
+            }
+            catch
+            {
+            }
+        }
     }
 }
