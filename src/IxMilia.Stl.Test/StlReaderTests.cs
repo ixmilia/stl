@@ -26,7 +26,7 @@ solid foo
 endsolid foo
 ");
             Assert.Equal("foo", file.SolidName);
-            Assert.Equal(1, file.Triangles.Count);
+            Assert.Single(file.Triangles);
             Assert.Equal(new StlNormal(1, 2, 3), file.Triangles[0].Normal);
             Assert.Equal(new StlVertex(4, 5, 6), file.Triangles[0].Vertex1);
             Assert.Equal(new StlVertex(7, 8, 9), file.Triangles[0].Vertex2);
