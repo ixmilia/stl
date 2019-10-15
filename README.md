@@ -5,8 +5,6 @@ A portable .NET library for reading and writing STL files.  Clone and build
 locally or directly consume the
 [NuGet package](http://www.nuget.org/packages/IxMilia.Stl/).
 
-[![Build Status](https://dev.azure.com/ixmilia/public/_apis/build/status/Stl?branchName=master)](https://dev.azure.com/ixmilia/public/_build/latest?definitionId=21)
-
 ## Usage
 
 Open an STL file:
