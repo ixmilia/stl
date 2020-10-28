@@ -17,12 +17,15 @@ try {
     # build
     $solution = "$PSScriptRoot/IxMilia.Stl.sln"
     dotnet restore $solution || Fail "Failed to restore solution"
-    dotnet build $solution -c $configuration || Fail "Failed to build solution"
+    dotnet build $solution --configuration $configuration || Fail "Failed to build solution"
 
     # test
     if (-Not $noTest) {
-        dotnet test --no-restore --no-build -c $configuration || Fail "Error running tests."
+        dotnet test --no-restore --no-build --configuration $configuration || Fail "Error running tests."
     }
+
+    # create package
+    dotnet pack --no-restore --no-build --configuration $configuration $solution
 }
 catch {
     Write-Host $_
