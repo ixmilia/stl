@@ -7,6 +7,12 @@ set runtests=true
 
 :parseargs
 if "%1" == "" goto argsdone
+if /i "%1" == "--configuration" (
+    set configuration=%2
+    shift
+    shift
+    goto parseargs
+)
 if /i "%1" == "-c" (
     set configuration=%2
     shift
