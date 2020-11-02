@@ -32,4 +32,4 @@ jobs:
       with:
         dotnet-version: ${{ env.DOTNET_SDK_VERSION }}
     - run: .\build-and-test.ps1 -configuration Release -notest
-    - run: dotnet nuget push .\artifacts\packages\Release\IxMilia.*.nupkg -s https://api.nuget.org/v3/index.json -k ${{ secrets.NUGET_API_KEY }}
+    - run: dotnet nuget push .\artifacts\packages\Release\*.nupkg -s https://api.nuget.org/v3/index.json -k ${{ secrets.NUGET_API_KEY }}
