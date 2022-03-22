@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Text;
 using Xunit;
 
 namespace IxMilia.Stl.Test
@@ -158,27 +159,18 @@ endsolid foo
 
             Assert.Equal(binarySize, binaryList.Count);
 
-            using (var ms = new MemoryStream())
-            {
-                ms.Write(binaryList.ToArray(), 0, binaryList.Count);
-                ms.Flush();
-                ms.Seek(0, SeekOrigin.Begin);
-                using (var stream = new StreamWithNoLengthOrPosition(ms))
-                {
-                    var file = StlFile.Load(stream);
-                    Assert.Equal(2, file.Triangles.Count);
+            var file = FromBytes(binaryList.ToArray());
+            Assert.Equal(2, file.Triangles.Count);
 
-                    Assert.Equal(new StlNormal(1.0f, 2.0f, 3.0f), file.Triangles[0].Normal);
-                    Assert.Equal(new StlVertex(4.0f, 5.0f, 6.0f), file.Triangles[0].Vertex1);
-                    Assert.Equal(new StlVertex(7.0f, 8.0f, 9.0f), file.Triangles[0].Vertex2);
-                    Assert.Equal(new StlVertex(10.0f, 11.0f, 12.0f), file.Triangles[0].Vertex3);
+            Assert.Equal(new StlNormal(1.0f, 2.0f, 3.0f), file.Triangles[0].Normal);
+            Assert.Equal(new StlVertex(4.0f, 5.0f, 6.0f), file.Triangles[0].Vertex1);
+            Assert.Equal(new StlVertex(7.0f, 8.0f, 9.0f), file.Triangles[0].Vertex2);
+            Assert.Equal(new StlVertex(10.0f, 11.0f, 12.0f), file.Triangles[0].Vertex3);
 
-                    Assert.Equal(new StlNormal(13.0f, 14.0f, 15.0f), file.Triangles[1].Normal);
-                    Assert.Equal(new StlVertex(16.0f, 17.0f, 18.0f), file.Triangles[1].Vertex1);
-                    Assert.Equal(new StlVertex(19.0f, 20.0f, 21.0f), file.Triangles[1].Vertex2);
-                    Assert.Equal(new StlVertex(22.0f, 23.0f, 24.0f), file.Triangles[1].Vertex3);
-                }
-            }
+            Assert.Equal(new StlNormal(13.0f, 14.0f, 15.0f), file.Triangles[1].Normal);
+            Assert.Equal(new StlVertex(16.0f, 17.0f, 18.0f), file.Triangles[1].Vertex1);
+            Assert.Equal(new StlVertex(19.0f, 20.0f, 21.0f), file.Triangles[1].Vertex2);
+            Assert.Equal(new StlVertex(22.0f, 23.0f, 24.0f), file.Triangles[1].Vertex3);
         }
 
         [Fact]
@@ -219,16 +211,11 @@ endsolid foo
             binaryList.AddRange(BitConverter.GetBytes(1.0f)); // vertex3.Y
             binaryList.AddRange(BitConverter.GetBytes(0.0f)); // vertex3.Z
             binaryList.AddRange(BitConverter.GetBytes((short)0)); // attribute byte count
-            using (var ms = new MemoryStream())
-            {
-                ms.Write(binaryList.ToArray(), 0, binaryList.Count);
-                ms.Flush();
-                ms.Seek(0, SeekOrigin.Begin);
-                var file = StlFile.Load(ms);
 
-                // should be auto-corrected to the positive z axis
-                Assert.Equal(new StlNormal(0, 0, 1), file.Triangles.Single().Normal);
-            }
+            var file = FromBytes(binaryList.ToArray());
+
+            // should be auto-corrected to the positive z axis
+            Assert.Equal(new StlNormal(0, 0, 1), file.Triangles.Single().Normal);
         }
 
         [Fact]
@@ -254,6 +241,43 @@ endsolid foo
             finally
             {
                 CultureInfo.CurrentCulture = existingCulture;
+            }
+        }
+
+        [Fact]
+        public void ReadBinaryFileThatLooksLikeASCIITest()
+        {
+            // build 80-byte header that _looks_ like ASCII, but isn't
+            var headerName = Encoding.ASCII.GetBytes("OpenSCAD Model\n");
+            var bytes = new List<byte>();
+            bytes.AddRange(headerName);
+            for (int i = headerName.Length; i < 80; i++)
+            {
+                bytes.Add(0);
+            }
+
+            // triangle count - (uint)0
+            bytes.Add(0);
+            bytes.Add(0);
+            bytes.Add(0);
+            bytes.Add(0);
+
+            var file = FromBytes(bytes.ToArray());
+
+            Assert.Equal("OpenSCAD Model", file.SolidName);
+            Assert.Empty(file.Triangles);
+        }
+
+        private StlFile FromBytes(byte[] bytes)
+        {
+            using (var ms = new MemoryStream())
+            {
+                ms.Write(bytes, 0, bytes.Length);
+                ms.Flush();
+                ms.Seek(0, SeekOrigin.Begin);
+
+                var file = StlFile.Load(ms);
+                return file;
             }
         }
 

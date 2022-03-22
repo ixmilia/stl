@@ -31,12 +31,10 @@ namespace IxMilia.Stl
                 var b = binReader.ReadByte();
                 if (b == '\n')
                 {
-                    isAscii = true;
                     headerComplete = true;
                 }
                 else if (b == 0)
                 {
-                    isAscii = false;
                     headerComplete = true;
                 }
                 else
@@ -49,11 +47,12 @@ namespace IxMilia.Stl
             var match = headerReg.Match(header);
             if (match.Success)
             {
+                isAscii = true;
                 header = match.Groups[1].Value;
             }
             else
             {
-                header = null;
+                isAscii = false;
             }
 
             if (isAscii)
@@ -126,7 +125,8 @@ namespace IxMilia.Stl
             StlTriangle triangle = null;
             if (isAscii)
             {
-                switch (PeekToken())
+                var token = PeekToken();
+                switch (token)
                 {
                     case "facet":
                         AdvanceToken();
