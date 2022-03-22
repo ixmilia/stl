@@ -1,6 +1,10 @@
 Changelog
 =========
 
+## 0.1.3 (22 March 2022)
+
+- Improve ASCII vs. binary file detection.
+
 ## 0.1.2 (28 October 2020)
 
 - Migrate to MIT license.
