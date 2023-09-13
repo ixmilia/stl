@@ -24,18 +24,19 @@ namespace IxMilia.Stl
         public string ReadSolidName()
         {
             int i;
-            bool headerComplete = false;
+            bool headerAsciiComplete = false;
+            bool headerBinaryComplete = false;
             var sb = new StringBuilder();
-            for (i = 0; i < 80 && !headerComplete; i++)
+            for (i = 0; i < 80 && !headerAsciiComplete && !headerBinaryComplete; i++)
             {
                 var b = binReader.ReadByte();
                 if (b == '\n')
                 {
-                    headerComplete = true;
+                    headerAsciiComplete = true;
                 }
                 else if (b == 0)
                 {
-                    headerComplete = true;
+                    headerBinaryComplete = true;
                 }
                 else
                 {
@@ -47,13 +48,10 @@ namespace IxMilia.Stl
             var match = headerReg.Match(header);
             if (match.Success)
             {
-                isAscii = true;
                 header = match.Groups[1].Value;
             }
-            else
-            {
-                isAscii = false;
-            }
+
+            isAscii = headerAsciiComplete && match.Success;
 
             if (isAscii)
             {
