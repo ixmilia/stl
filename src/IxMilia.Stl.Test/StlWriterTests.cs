@@ -1,3 +1,4 @@
+using System;
 using System.Globalization;
 using System.IO;
 using Xunit;
@@ -16,7 +17,7 @@ namespace IxMilia.Stl.Test
             file.Save(stream);
             stream.Seek(0, SeekOrigin.Begin);
             var content = new StreamReader(stream).ReadToEnd();
-            Assert.Equal(@"solid foo
+            var expected = @"solid foo
   facet normal 1.000000e+000 2.000000e+000 3.000000e+000
     outer loop
       vertex 4.000000e+000 5.000000e+000 6.000000e+000
@@ -25,7 +26,13 @@ namespace IxMilia.Stl.Test
     endloop
   endfacet
 endsolid foo
-", content);
+".Replace("\r", "");
+            if (Environment.NewLine == "\r\n")
+            {
+                expected = expected.Replace("\n", "\r\n");
+            }
+
+            Assert.Equal(expected, content);
         }
 
         [Fact]
