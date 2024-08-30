@@ -14,7 +14,6 @@ namespace IxMilia.Stl
             Triangles = new List<StlTriangle>();
         }
 
-#if HAS_FILESYSTEM_ACCESS
         public void Save(string path, bool asAscii = true)
         {
             using (var stream = new FileStream(path, FileMode.Create))
@@ -22,7 +21,6 @@ namespace IxMilia.Stl
                 Save(stream, asAscii);
             }
         }
-#endif
 
         public void Save(Stream stream, bool asAscii = true)
         {
@@ -30,7 +28,6 @@ namespace IxMilia.Stl
             writer.Write(this, stream, asAscii);
         }
 
-#if HAS_FILESYSTEM_ACCESS
         public static StlFile Load(string path)
         {
             using (var stream = new FileStream(path, FileMode.Open))
@@ -38,7 +35,6 @@ namespace IxMilia.Stl
                 return Load(stream);
             }
         }
-#endif
 
         public static StlFile Load(Stream stream)
         {
