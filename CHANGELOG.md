@@ -1,6 +1,10 @@
 Changelog
 =========
 
+## 0.1.4 (24 July 2025)
+
+- Improve binary file detection.
+
 ## 0.1.3 (22 March 2022)
 
 - Improve ASCII vs. binary file detection.
