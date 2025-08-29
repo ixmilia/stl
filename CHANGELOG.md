@@ -4,6 +4,7 @@ Changelog
 ## 0.1.4 (24 July 2025)
 
 - Improve binary file detection.
+- Update minimum target framework to `netstandard2.0`.
 
 ## 0.1.3 (22 March 2022)
 
