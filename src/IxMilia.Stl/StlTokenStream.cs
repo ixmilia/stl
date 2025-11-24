@@ -6,7 +6,7 @@ using System.Text;
 
 namespace IxMilia.Stl
 {
-    internal class StlTokenStream : IEnumerator<string>
+    internal class StlTokenStream : IEnumerator<string?>
     {
         private StreamReader _textReader;
 
@@ -15,9 +15,9 @@ namespace IxMilia.Stl
             _textReader = new StreamReader(baseStream);
         }
 
-        public string Current { get; private set; }
+        public string? Current { get; private set; }
 
-        object IEnumerator.Current => Current;
+        object? IEnumerator.Current => Current;
 
         public void Dispose()
         {

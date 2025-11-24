@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Text;
@@ -10,13 +11,14 @@ namespace IxMilia.Stl
     {
         private Stream baseStream;
         private BinaryReader binReader;
-        private IEnumerator<string> tokenEnumerator;
+        private IEnumerator<string?>? tokenEnumerator;
         private bool isAscii;
         private uint triangleCount;
         private Regex headerReg = new Regex("^solid (.*)$");
 
         public StlReader(Stream stream)
         {
+            // create empty token enumerator
             baseStream = stream;
             binReader = new BinaryReader(stream);
         }
@@ -118,9 +120,9 @@ namespace IxMilia.Stl
             return new StlVertex(ReadFloatBinary(), ReadFloatBinary(), ReadFloatBinary());
         }
 
-        private StlTriangle ReadTriangle()
+        private StlTriangle? ReadTriangle()
         {
-            StlTriangle triangle = null;
+            StlTriangle? triangle = null;
             if (isAscii)
             {
                 var token = PeekToken();
@@ -182,13 +184,15 @@ namespace IxMilia.Stl
             return new StlVertex(ConsumeNumberToken(), ConsumeNumberToken(), ConsumeNumberToken());
         }
 
-        private string PeekToken()
+        private string? PeekToken()
         {
+            Debug.Assert(tokenEnumerator is not null);
             return tokenEnumerator.Current;
         }
 
         private void AdvanceToken()
         {
+            Debug.Assert(tokenEnumerator is not null);
             tokenEnumerator.MoveNext();
         }
     }

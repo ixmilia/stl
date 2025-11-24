@@ -11,6 +11,7 @@ namespace IxMilia.Stl
 
         public StlFile()
         {
+            SolidName = string.Empty;
             Triangles = new List<StlTriangle>();
         }
 
